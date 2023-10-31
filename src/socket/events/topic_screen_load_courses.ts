@@ -2,12 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { secretToken } from "../../const/config";
 import Boom from "boom";
 import { io } from "socket.io-client";
-import {
-    getProgressForVocabulary,
-  hasUserAchievedWithoutRequest,
-  hasUserCompletedLessonToday,
-  hasUserCompletedLessonYesterday,
-} from "../../const/common";
+
 import { ErrorCodes } from "../../const/error_codes";
 import { UserCourseEntity } from "../../entities/user_course_entity";
 import { UserEntity } from "../../entities/user_entity";
@@ -17,6 +12,7 @@ import { TopicService } from "../../services/topic_service";
 import { UserCourseService } from "../../services/user_course_service";
 import { UserService } from "../../services/user_service";
 import { UserStatisticsService } from "../../services/user_statistics_service";
+import { UserUtils } from "../../logic/user";
 
 const jwt = require("jsonwebtoken");
 export async function topicScreenLoadCourses(
@@ -35,7 +31,7 @@ export async function topicScreenLoadCourses(
   var activeCoursesData: UserCourseEntity[] =
     await UserCourseService.getActiveUserCourses(user);
 
-  var activeCourses = await getProgressForVocabulary(activeCoursesData, user);
+  var activeCourses = await UserUtils.getProgressForVocabulary(activeCoursesData, user);
 
   var currentUserCourse = user.profile.userCourse;
 
