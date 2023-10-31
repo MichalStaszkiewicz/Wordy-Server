@@ -38,7 +38,7 @@ import { UserService } from '../services/user_service';
 import { InterfaceLanguageService } from '../services/interface_language_service';
 import { UserSettingsService } from '../services/user_settings_service';
 import { RegisterationService } from '../services/registeration_repository';
-import { hasUserCompletedLessonToday, validateEmail } from '../const/common';
+
 import { generateToken } from '../const/validation/validate_auth';
 import { UserAchievementService } from '../services/user_achievements_service';
 import { AchievementService } from '../services/achievement_service';
@@ -52,6 +52,7 @@ import nodemailer from 'nodemailer';
 import { RecoverAccountRequest } from '../interfaces/requests/recover_account_request';
 import { RecoverAccountConfirmTokenRequest } from '../interfaces/requests/recover_accont_confirm_token_request';
 import { UpdateUserPassword } from '../interfaces/requests/update_user_password';
+import { UserUtils } from '../logic/user';
 interface RecoverAccountData {
 
     token: string;
@@ -72,7 +73,7 @@ export class UserController {
                 return Boom.badRequest(ErrorCodes.ERROR_PARAMETERS_CANNOT_BE_EMPTY)
             }
 
-            if (!(validateEmail(payload.email))) {
+            if (!(UserUtils.validateEmail(payload.email))) {
                 return Boom.badRequest(ErrorCodes.ERROR_INVALID_EMAIL_OR_PASSWORD)
             }
             const existingUser = await UserService.getUserByEmail(payload.email)

@@ -2,11 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { secretToken } from "../../const/config";
 import Boom from "boom";
 import { io } from "socket.io-client";
-import {
-  hasUserAchievedWithoutRequest,
-  hasUserCompletedLessonToday,
-  hasUserCompletedLessonYesterday,
-} from "../../const/common";
+
 import { ErrorCodes } from "../../const/error_codes";
 import { UserCourseEntity } from "../../entities/user_course_entity";
 import { UserEntity } from "../../entities/user_entity";

@@ -2,7 +2,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { secretToken } from "../../const/config";
 import Boom from "boom";
 import { io } from "socket.io-client";
-import { hasUserAchievedWithoutRequest, hasUserCompletedLessonToday, hasUserCompletedLessonYesterday } from "../../const/common";
+
 import { ErrorCodes } from "../../const/error_codes";
 import { UserCourseEntity } from "../../entities/user_course_entity";
 import { UserEntity } from "../../entities/user_entity";
@@ -13,6 +13,7 @@ import { UserCourseService } from "../../services/user_course_service";
 import { UserService } from "../../services/user_service";
 import { UserStatisticsService } from "../../services/user_statistics_service";
 import { TQuizSummary } from "../../const/types/quiz_summary";
+import { UserUtils } from "../../logic/user";
 
 
 const jwt = require("jsonwebtoken");
@@ -32,17 +33,17 @@ export async function quizSummary(
     return Boom.badRequest(ErrorCodes.ERROR_USER_DOES_NOT_EXIST);
   }
 
-  var achievementsData = (await hasUserAchievedWithoutRequest(
+  var achievementsData = (await UserUtils.syncAchievements(
     verifiedToken.userId
   )) as INewUserAchievementResponse;
   var achievements = achievementsData.achieved;
 
   var hotStreak = 0;
   if (
-    (await hasUserCompletedLessonToday(user)) == false &&
+    (await UserUtils.completedDaily(user)) == false &&
     user.profile.statistics.dailyLesson == false
   ) {
-    var hasUserCompletedYesterDayLesson = await hasUserCompletedLessonYesterday(
+    var hasUserCompletedYesterDayLesson = await UserUtils.completedYesterday(
       user
     );
     if (hasUserCompletedYesterDayLesson) {
