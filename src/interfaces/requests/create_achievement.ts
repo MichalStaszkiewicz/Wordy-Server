@@ -5,5 +5,6 @@ export interface ICreateAchievement extends Hapi.Request {
     description: string;
     goal: number;
     type: string;
+    image:string;
   };
 }

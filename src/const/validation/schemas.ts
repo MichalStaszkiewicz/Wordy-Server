@@ -12,6 +12,7 @@ export const achievementCreateSchema = Joi.object({
   description: Joi.string().required().description("Achievement description"),
   type: Joi.string().required().description("Achievement type"),
   goal: Joi.number().required().description("Achievement goal"),
+  image: Joi.string().required().description("Achievement image"),
 });
 
 // Validation schema for the language name parameter

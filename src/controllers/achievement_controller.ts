@@ -55,6 +55,7 @@ export class AchievementController {
       achievement.description = payload.description;
       achievement.goal = payload.goal;
       achievement.type = payload.type;
+      achievement.image = payload.image
 
       AchievementService.save(achievement);
 
