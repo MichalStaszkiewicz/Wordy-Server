@@ -3,12 +3,7 @@ import { server } from "../server";
 
 import { Server, Socket } from "socket.io";
 import { UserCourseEntity } from "../entities/user_course_entity";
-import {
-  getProgressForVocabulary,
-  hasUserAchievedWithoutRequest,
-  hasUserCompletedLessonToday,
-  hasUserCompletedLessonYesterday,
-} from "../const/common";
+
 import { ProfileService } from "../services/profile_service";
 import { UserService } from "../services/user_service";
 import { secretToken } from "../const/config";
@@ -32,7 +27,7 @@ import { TopicService } from "../services/topic_service";
 
 import { InterfaceLanguageController } from "../controllers/language_controller";
 import { InterfaceLanguageService } from "../services/interface_language_service";
-import { authMiddleware, socketMiddleware } from "./auth_middleware";
+import { authMiddleware, socketMiddleware as tokenExpireMiddleware } from "./auth_middleware";
 import { JwtPayload } from "../interfaces/jwt_payload";
 import { joinRoom } from "./events/join_room";
 import { RoomRefresh } from "../const/types/room_refresh";
@@ -55,13 +50,13 @@ export function initSocket() {
   });
 
   io.on("connection", (socket: Socket) => {
-    let state = false;
+   
 
     socket.on("authenticate", async (token) => {
       console.log("authenticate");
     });
     socket.use((packet, next) => {
-      socketMiddleware(packet, next, socket, connectedClients, io);
+      tokenExpireMiddleware(packet, next, socket, connectedClients, io);
     });
 
     socket.on("joinRoom", (token) => {
