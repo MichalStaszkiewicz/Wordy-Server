@@ -4,9 +4,10 @@ import * as JWT from 'jsonwebtoken';
 import { secretToken } from '../config';
 import Boom = require('boom');
 import { IValidateToken } from '../../interfaces/validate_token';
-import { JwtPayload } from '../../socket/socket';
+
 import { IRequest } from '../../interfaces/request';
 import { ResponseToolkit } from 'hapi';
+import { JwtPayload } from '../../interfaces/jwt_payload';
 export function generateToken(payload: any): string {
 //TODO change expiredsIn to 3h
     return JWT.sign(payload, secretToken, { expiresIn: '3h' });
