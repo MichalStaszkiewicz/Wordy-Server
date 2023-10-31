@@ -15,4 +15,6 @@ export class AchievementEntity {
   goal!: number;
   @Column({ nullable: false })
   type!: string;
+  @Column({ nullable: false })
+  image!: string;
 }
