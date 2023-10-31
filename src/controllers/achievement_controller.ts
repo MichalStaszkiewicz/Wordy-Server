@@ -9,6 +9,7 @@ import { ErrorCodes } from "../const/error_codes";
 import { AchievementService } from "../services/achievement_service";
 import { AchievementEntity } from "../entities/achievement_entity";
 import { Code } from "typeorm";
+import { ImageValidator } from "../logic/image";
 
 export class AchievementController {
   public static async getAllAchievements(
@@ -49,13 +50,24 @@ export class AchievementController {
       if (!selectedType) {
         return Boom.badRequest(ErrorCodes.ERROR_INVALID_ACHIEVEMENT_TYPE);
       }
+      const imageExist = await ImageValidator.exists(payload.image);
+      const allowedExtensions = await ImageValidator.validateExtension(
+        payload.image
+      );
 
+      if (!imageExist) {
+        return Boom.notFound(ErrorCodes.ERROR_INVALID_IMAGE_PATH);
+      }
+
+      if (!allowedExtensions) {
+        return Boom.notFound(ErrorCodes.ERROR_INVALID_IMAGE_EXTENSION);
+      }
       const achievement: AchievementEntity = new AchievementEntity();
       achievement.name = payload.name;
       achievement.description = payload.description;
       achievement.goal = payload.goal;
       achievement.type = payload.type;
-      achievement.image = payload.image
+      achievement.image = payload.image;
 
       AchievementService.save(achievement);
 
