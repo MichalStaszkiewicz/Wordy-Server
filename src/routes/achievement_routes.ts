@@ -1,7 +1,10 @@
 import { server } from "../server";
 import { AchievementController } from "../controllers/achievement_controller";
 import Joi from "joi";
-import { achievementIdSchema } from "../const/validation/schemas";
+import {
+  achievementIdSchema,
+  achievementCreateSchema,
+} from "../const/validation/schemas";
 
 export function achievement_init() {
   server.route({
@@ -9,10 +12,7 @@ export function achievement_init() {
     path: "/v1/achievements",
     handler: AchievementController.getAllAchievements,
 
-    options: {
-      auth: false,
-      tags: ["api"],
-    },
+    options: { auth: false, tags: ["api"] },
   });
 
   server.route({
@@ -23,5 +23,17 @@ export function achievement_init() {
       validate: { auth: false, params: achievementIdSchema },
     },
     handler: AchievementController.getAchievementById,
+  });
+  server.route({
+    method: "GET",
+    path: "/v1/achievements/add",
+    options: {
+      tags: ["api"],
+      validate: {
+        params: achievementCreateSchema,
+        auth: false,
+      },
+    },
+    handler: AchievementController.save,
   });
 }
