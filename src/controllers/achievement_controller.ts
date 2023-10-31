@@ -39,7 +39,7 @@ export class AchievementController {
     response: ResponseToolkit
   ) {
     try {
-      const payload = request.payload;
+      const payload = request.params;
       let selectedType = "";
       for (const type in AchievementType) {
         if (type.toLowerCase() == payload.type.toLowerCase()) {

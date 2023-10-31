@@ -19,19 +19,20 @@ export function achievement_init() {
     method: "GET",
     path: "/v1/achievements/{id}",
     options: {
+      auth: false,
       tags: ["api"],
-      validate: { auth: false, params: achievementIdSchema },
+      validate: { params: achievementIdSchema },
     },
     handler: AchievementController.getAchievementById,
   });
   server.route({
     method: "GET",
-    path: "/v1/achievements/add",
+    path: "/v1/achievements/add/{name}/{description}/{goal}/{type}",
     options: {
+      auth: false,
       tags: ["api"],
       validate: {
         params: achievementCreateSchema,
-        auth: false,
       },
     },
     handler: AchievementController.save,

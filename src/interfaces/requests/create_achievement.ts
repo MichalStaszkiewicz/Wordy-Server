@@ -1,6 +1,6 @@
 import * as Hapi from "@hapi/hapi";
 export interface ICreateAchievement extends Hapi.Request {
-  payload: {
+  params: {
     name: string;
     description: string;
     goal: number;
