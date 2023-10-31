@@ -42,6 +42,7 @@ export class AchievementController {
     try {
       const payload = request.params;
       let selectedType = "";
+  
       for (const type in AchievementType) {
         if (type.toLowerCase() == payload.type.toLowerCase()) {
           selectedType = payload.type.toLowerCase();
@@ -51,7 +52,7 @@ export class AchievementController {
         return Boom.badRequest(ErrorCodes.ERROR_INVALID_ACHIEVEMENT_TYPE);
       }
       const imageExist = await ImageValidator.exists(payload.image);
-      const allowedExtensions = await ImageValidator.validateExtension(
+      const allowedExtensions = ImageValidator.validateExtension(
         payload.image
       );
 
@@ -79,6 +80,7 @@ export class AchievementController {
         .code(200);
     } catch (error) {
       console.log("Error occured: " + error);
+      return Boom.badImplementation();
     }
   }
 }
