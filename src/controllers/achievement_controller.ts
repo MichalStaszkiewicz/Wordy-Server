@@ -12,9 +12,8 @@ import { Code } from "typeorm";
 import { ImageValidator } from "../logic/image";
 import { UserService } from "../services/user_service";
 import { UserEntity } from "../entities/user_entity";
-import { UserAchievementService } from "../services/user_achievements_service";
-import { UserAchievementsEntity } from "../entities/user_achievements_entity";
 import { checkAndSaveAchievement } from "../const/validation/validate_auth";
+
 
 export class AchievementController {
   public static async getAllAchievements(

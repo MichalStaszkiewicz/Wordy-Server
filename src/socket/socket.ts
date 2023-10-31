@@ -57,30 +57,38 @@ export function initSocket() {
   io.on("connection", (socket: Socket) => {
     let state = false;
 
-    socket.on("authenticate", async (token) => {});
+    socket.on("authenticate", async (token) => {
+      console.log("authenticate");
+    });
     socket.use((packet, next) => {
       socketMiddleware(packet, next, socket, connectedClients, io);
     });
 
     socket.on("joinRoom", (token) => {
+      console.log("joinRoom");
       joinRoom(connectedClients, token, socket);
     });
 
     socket.on("quiz_summary", async (data) => {
+      console.log("quiz_summary");
       quizSummary(connectedClients, data, socket, io);
     });
     socket.on("topic_screen_load_courses", async (data) => {
+      console.log("topic_screen_load_courses");
       topicScreenLoadCourses(connectedClients, data, socket, io);
     });
 
     socket.on("add_course", async (token, course) => {
+      console.log("add_course");
       addCourse(connectedClients, token, socket, io);
     });
 
     socket.on("load_current_course", async (data) => {
+      console.log("load_current_course");
       loadCurrentCourse(connectedClients, data, socket, io);
     });
     socket.on("token_refresh", (data) => {
+      console.log("token_refresh");
       tokenRefresh(socket, data);
     });
     socket.on("logout", (token) => {
