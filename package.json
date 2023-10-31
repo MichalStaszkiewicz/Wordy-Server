@@ -1,0 +1,49 @@
+{
+  "name": "wordy-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && tsc --outDir dist",
+    "start": "node ./dist/index.js",
+    "dev": "nodemon ./src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.1",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "boom": "^7.3.0",
+    "hapi-auth-jwt2": "^10.4.0",
+    "hapi-swagger": "^16.0.1",
+    "joi": "^17.9.2",
+    "jsonwebtoken": "^9.0.0",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.9.1",
+    "pg": "^8.10.0",
+    "pino": "^8.11.0",
+    "socket.io": "^4.6.2",
+    "socket.io-client": "^4.6.2",
+    "swagger-stats": "^0.99.5",
+    "typeorm": "^0.3.15"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/body-parser": "^1.19.2",
+    "@types/hapi": "^18.0.8",
+    "@types/hapi__vision": "^5.5.4",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/nodemailer": "^6.4.7",
+    "@types/uuid": "^9.0.1",
+    "concurrently": "^8.2.0",
+    "hapi-pino": "^12.0.0",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
