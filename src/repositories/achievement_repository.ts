@@ -13,7 +13,7 @@ export class AchievementRepository {
       .getRepository(AchievementEntity)
       .findOneBy({ name: name });
   }
-  public static async save(achievement: AchievementEntity) {
+  public static async save(achievement: AchievementEntity):Promise<AchievementEntity> {
     return dataSource.getRepository(AchievementEntity).save(achievement);
   }
 }

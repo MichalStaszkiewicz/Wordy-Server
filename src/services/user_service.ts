@@ -12,25 +12,23 @@ import { UserRepository } from "../repositories/user_repository";
 import { UserSettingsRepository } from "../repositories/user_settings_repository";
 import { UUID } from "typeorm/driver/mongodb/bson.typings";
 
-
 export class UserService {
-
-    public static async createUser(user: UserEntity): Promise<any> {
-        return UserRepository.save(user);
-
-    }
-    public static async update(data: Partial<UserEntity>,user:UserEntity):Promise<any> {
-
-        return UserRepository.update(data,user)
-
-
-    }
-    public static async getUserByEmail(email: string): Promise<any> {
-
-        return UserRepository.getUserByEmail(email);
-    }
-    public static async getUserById(id: string): Promise<any> {
-        return UserRepository.getUserById(id);
-    }
-
+  public static async createUser(user: UserEntity): Promise<any> {
+    return UserRepository.save(user);
+  }
+  public static async update(
+    data: Partial<UserEntity>,
+    user: UserEntity
+  ): Promise<any> {
+    return UserRepository.update(data, user);
+  }
+  public static async getAll(): Promise<UserEntity[]> {
+    return UserRepository.getAll();
+  }
+  public static async getUserByEmail(email: string): Promise<any> {
+    return UserRepository.getUserByEmail(email);
+  }
+  public static async getUserById(id: string): Promise<any> {
+    return UserRepository.getUserById(id);
+  }
 }
