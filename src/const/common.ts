@@ -42,6 +42,7 @@ export async function hasUserAchievedWithoutRequest(userId: string) {
     var newestUserAchievements: UserAchievementsEntity[] = [];
     userAchievements.forEach((userAchievement) => {
       validUserAchievements.push(userAchievement.achievement);
+
       if (userAchievement.achievement.type == "word") {
         if (
           totalWords.totalWords >= userAchievement.achievement.goal &&
@@ -82,6 +83,18 @@ export async function hasUserAchievedWithoutRequest(userId: string) {
     console.log(error);
     return Boom.badImplementation();
   }
+}
+export function validateImage(imageName: string) {
+  const allowedExtensions = [".gif", ".png", ".jpg", ".jpeg"];
+
+  const hasValidExtension = allowedExtensions.some((ext) =>
+    imageName.endsWith(ext)
+  );
+
+  if (!hasValidExtension) {
+    return false;
+  }
+  return true;
 }
 export function validateEmail(email: string) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -237,14 +250,14 @@ export async function hasUserCompletedLessonYesterday(user: UserEntity) {
     return Boom.badImplementation();
   }
 }
-export function isSameDay(date1: Date, date2: Date): boolean {
+function isSameDay(date1: Date, date2: Date): boolean {
   return (
     date1.getFullYear() === date2.getFullYear() &&
     date1.getMonth() === date2.getMonth() &&
     date1.getDate() === date2.getDate()
   );
 }
-export function getYesterday(): Date {
+function getYesterday(): Date {
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);

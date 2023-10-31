@@ -22,7 +22,7 @@ import { TopicService } from "../services/topic_service";
 import { IRequest } from "../interfaces/request";
 import { validateToken } from "../const/validation/validate_auth";
 import { IValidateToken } from "../interfaces/validate_token";
-import { JwtPayload } from './../socket/socket';
+import { JwtPayload } from "../interfaces/jwt_payload";
 import { UserCourseController } from "./user_course_controller";
 import { getProgressForVocabulary } from "../const/common";
 import { VocabularyEntity } from "../entities/vocabulary_entity";
