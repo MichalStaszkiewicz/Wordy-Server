@@ -13,7 +13,9 @@ export class AchievementService {
     return AchievementRepository.exists(name);
   }
 
-  public static async save(achievement: AchievementEntity) {
+  public static async save(
+    achievement: AchievementEntity
+  ): Promise<AchievementEntity> {
     return AchievementRepository.save(achievement);
   }
 }

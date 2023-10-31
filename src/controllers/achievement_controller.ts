@@ -10,6 +10,11 @@ import { AchievementService } from "../services/achievement_service";
 import { AchievementEntity } from "../entities/achievement_entity";
 import { Code } from "typeorm";
 import { ImageValidator } from "../logic/image";
+import { UserService } from "../services/user_service";
+import { UserEntity } from "../entities/user_entity";
+import { UserAchievementService } from "../services/user_achievements_service";
+import { UserAchievementsEntity } from "../entities/user_achievements_entity";
+import { checkAndSaveAchievement } from "../const/validation/validate_auth";
 
 export class AchievementController {
   public static async getAllAchievements(
@@ -72,8 +77,11 @@ export class AchievementController {
       achievement.type = payload.type;
       achievement.image = payload.image;
 
-      AchievementService.save(achievement);
-
+      const achievementRecord = await AchievementService.save(achievement);
+      const users = await UserService.getAll();
+      await Promise.all(
+        users.map((user) => checkAndSaveAchievement(user, achievementRecord))
+      );
       return response
         .response({
           status: 200,
