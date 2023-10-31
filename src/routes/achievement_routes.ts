@@ -27,7 +27,7 @@ export function achievement_init() {
   });
   server.route({
     method: "GET",
-    path: "/v1/achievements/add/{name}/{description}/{goal}/{type}",
+    path: "/v1/achievements/add/{name}/{description}/{goal}/{type}/{image}",
     options: {
       auth: false,
       tags: ["api"],

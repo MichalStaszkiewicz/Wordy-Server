@@ -42,6 +42,7 @@ export class AchievementController {
     try {
       const payload = request.params;
       let selectedType = "";
+
       for (const type in AchievementType) {
         if (type.toLowerCase() == payload.type.toLowerCase()) {
           selectedType = payload.type.toLowerCase();
@@ -51,9 +52,7 @@ export class AchievementController {
         return Boom.badRequest(ErrorCodes.ERROR_INVALID_ACHIEVEMENT_TYPE);
       }
       const imageExist = await ImageValidator.exists(payload.image);
-      const allowedExtensions = await ImageValidator.validateExtension(
-        payload.image
-      );
+      const allowedExtensions = ImageValidator.validateExtension(payload.image);
 
       if (!imageExist) {
         return Boom.notFound(ErrorCodes.ERROR_INVALID_IMAGE_PATH);
@@ -61,6 +60,10 @@ export class AchievementController {
 
       if (!allowedExtensions) {
         return Boom.notFound(ErrorCodes.ERROR_INVALID_IMAGE_EXTENSION);
+      }
+      const achievementExists = await AchievementService.exists(payload.name);
+      if (achievementExists) {
+        return Boom.badRequest(ErrorCodes.ERROR_ACHIEVEMENT_EXISTS);
       }
       const achievement: AchievementEntity = new AchievementEntity();
       achievement.name = payload.name;
@@ -79,6 +82,7 @@ export class AchievementController {
         .code(200);
     } catch (error) {
       console.log("Error occured: " + error);
+      return Boom.badImplementation();
     }
   }
 }
