@@ -31,13 +31,14 @@ import { CourseEntity } from "../entities/course_entity";
 
 import { UserController } from "./user_controller";
 
-import { getProgressForVocabulary } from "../const/common";
+
 import { IRequest } from "../interfaces/request";
 import { ICourseProgressResponse } from "../interfaces/responses/course_progress_response";
 import { VocabularyEntity } from "../entities/vocabulary_entity";
 import { ModeEntity } from "../entities/mode_entity";
 import { VocabularyService } from "../services/vocabulary_service";
 import { ModeService } from "../services/mode_service";
+import { UserUtils } from "../logic/user";
 
 
 
@@ -154,7 +155,7 @@ export class UserCourseController {
 
 
 
-            var activeCourses = await getProgressForVocabulary(activeCoursesData,user);
+            var activeCourses = await UserUtils.getProgressForVocabulary(activeCoursesData,user);
             var currentCourse: ActiveCourseProgress | null = null;
             activeCourses!.forEach((e) => {
 
@@ -216,7 +217,7 @@ export class UserCourseController {
                 return response.response({ message: Messages.MESSAGE_USER_NO_ACTIVE_COURSES })
             }
 
-            var userCoursesProgress = await getProgressForVocabulary(activeCoursesData,user);
+            var userCoursesProgress = await UserUtils.getProgressForVocabulary(activeCoursesData,user);
 
 
             const activeCourses: ActiveCourseProgress[] = [];

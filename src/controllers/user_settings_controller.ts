@@ -19,117 +19,124 @@ import { ModeEntity } from "../entities/mode_entity";
 import { VocabularyEntity } from "../entities/vocabulary_entity";
 import { VocabularyService } from "../services/vocabulary_service";
 import { ProfileEntity } from "../entities/profile_entity";
-import { getProgressForVocabulary } from "../const/common";
+
 import { ActiveCourseProgress } from "../interfaces/model/active_course_progress";
 import { ProfileService } from "../services/profile_service";
-
+import { UserUtils } from "../logic/user";
 
 export class UserSettingsController {
+  public static async getUserSettings(
+    request: IRequest,
+    response: ResponseToolkit
+  ) {
+    const userId: string = request.auth.credentials.userId;
 
-    public static async getUserSettings(request: IRequest, response: ResponseToolkit) {
-        const userId: string = request.auth.credentials.userId;
+    try {
+      if (!userId) {
+        return Boom.badRequest(ErrorCodes.ERROR_MISSING_USER_ID);
+      }
 
-        try {
+      const user = await UserService.getUserById(userId);
+      if (!user) {
+        return Boom.badRequest(ErrorCodes.ERROR_USER_DOES_NOT_EXIST);
+      }
 
+      const userSettings: UserSettingsEntity =
+        await UserSettingsService.getUserSettings(user);
 
-            if (!userId) {
-                return Boom.badRequest(ErrorCodes.ERROR_MISSING_USER_ID);
-            }
-      
-            const user = await UserService.getUserById(userId);
-            if (!user) {
-                return Boom.badRequest(ErrorCodes.ERROR_USER_DOES_NOT_EXIST);
-            }
+      if (!userSettings) {
+        return Boom.badRequest(ErrorCodes.ERROR_USER_SETTINGS_NOT_FOUND);
+      }
 
-            const userSettings: UserSettingsEntity = await UserSettingsService.getUserSettings(user);
-
-            if (!userSettings) {
-
-                return Boom.badRequest(ErrorCodes.ERROR_USER_SETTINGS_NOT_FOUND);
-            }
-
-            return response.response({ userSettings }).code(200);
-
-        } catch (error) {
-            console.log(error);
-            return Boom.badImplementation();
-        }
-
+      return response.response({ userSettings }).code(200);
+    } catch (error) {
+      console.log(error);
+      return Boom.badImplementation();
     }
+  }
 
-    public static async updateUserInterfaceLanguage(request: IUpdateUserInterfaceLanguageRequest, response: ResponseToolkit) {
-        const payload = request.payload;
-        try {
-            const userId: string = request.auth.credentials.userId;
-            const userLanguage = payload.languageName;
+  public static async updateUserInterfaceLanguage(
+    request: IUpdateUserInterfaceLanguageRequest,
+    response: ResponseToolkit
+  ) {
+    const payload = request.payload;
+    try {
+      const userId: string = request.auth.credentials.userId;
+      const userLanguage = payload.languageName;
 
-            if (!userId) {
-                return Boom.badRequest(ErrorCodes.ERROR_MISSING_USER_ID);
-            }
+      if (!userId) {
+        return Boom.badRequest(ErrorCodes.ERROR_MISSING_USER_ID);
+      }
 
-            const user: UserEntity = await UserService.getUserById(userId);
-            if (!user) {
+      const user: UserEntity = await UserService.getUserById(userId);
+      if (!user) {
+        return Boom.badRequest(ErrorCodes.ERROR_USER_DOES_NOT_EXIST);
+      }
 
-                return Boom.badRequest(ErrorCodes.ERROR_USER_DOES_NOT_EXIST);
+      if (!userLanguage) {
+        return Boom.badRequest(ErrorCodes.ERROR_INVALID_LANGUAGE);
+      }
 
-            }
-      
-            if (!userLanguage) {
-                return Boom.badRequest(ErrorCodes.ERROR_INVALID_LANGUAGE);
-            }
+      const language: InterfaceLanguageEntity =
+        await InterfaceLanguageService.getLanguageByName(userLanguage);
+      if (!language) {
+        return Boom.badRequest(ErrorCodes.ERROR_INVALID_LANGUAGE);
+      }
+      const userSettingsPartial: Partial<UserSettingsEntity> = {
+        interfaceLanguage: language,
+      };
 
-            const language: InterfaceLanguageEntity = await InterfaceLanguageService.getLanguageByName(userLanguage);
-            if (!language) {
-                return Boom.badRequest(ErrorCodes.ERROR_INVALID_LANGUAGE);
-            } const userSettingsPartial: Partial<UserSettingsEntity> = ({
-
-                interfaceLanguage: language,
-
-            });
-
-
-
-
-      
-            await UserSettingsService.updateInterfaceLanguage(user, userSettingsPartial);
-            const userAfterlanguageUpdate: UserEntity = await UserService.getUserById(userId);
-            const userCourses = await UserCourseService.getActiveUserCourses(userAfterlanguageUpdate);
-            if (userCourses.length > 0) {
-                const progresses: ActiveCourseProgress[] | undefined = await getProgressForVocabulary(userCourses, userAfterlanguageUpdate);
-                if (progresses == null) {
-                    return Boom.badImplementation();
-                }
-                progresses as ActiveCourseProgress[];
-                let highestTotalProgress = 0.0;
-                let currentUserCourse: UserCourseEntity = new UserCourseEntity;
-                for (const progress of progresses) {
-                    if (progress.activeCourse.totalProgress >= highestTotalProgress) {
-                 
-                        currentUserCourse = progress.activeCourse.userCourse;
-                    }
-
-                }
-                const profilePartial: Partial<ProfileEntity> = ({
-
-                    userCourse: currentUserCourse,
-
-                })
-
-                await ProfileService.update(userAfterlanguageUpdate, profilePartial);
-                return response.response({ message: Messages.MESSAGE_SUCCESS, updatedLanguageName: request.payload.languageName, userCoursesInThisLanguage: userCourses.length }).code(200)
-            } 
-
-            
-
-            return response.response({ message: Messages.MESSAGE_SUCCESS, updatedLanguageName: request.payload.languageName, userCoursesInThisLanguage: userCourses.length }).code(200)
-
-        } catch (error) {
-            console.log(error);
-            return Boom.badImplementation();
-
+      await UserSettingsService.updateInterfaceLanguage(
+        user,
+        userSettingsPartial
+      );
+      const userAfterlanguageUpdate: UserEntity = await UserService.getUserById(
+        userId
+      );
+      const userCourses = await UserCourseService.getActiveUserCourses(
+        userAfterlanguageUpdate
+      );
+      if (userCourses.length > 0) {
+        const progresses: ActiveCourseProgress[] | undefined =
+          await UserUtils.getProgressForVocabulary(
+            userCourses,
+            userAfterlanguageUpdate
+          );
+        if (progresses == null) {
+          return Boom.badImplementation();
         }
+        progresses as ActiveCourseProgress[];
+        let highestTotalProgress = 0.0;
+        let currentUserCourse: UserCourseEntity = new UserCourseEntity();
+        for (const progress of progresses) {
+          if (progress.activeCourse.totalProgress >= highestTotalProgress) {
+            currentUserCourse = progress.activeCourse.userCourse;
+          }
+        }
+        const profilePartial: Partial<ProfileEntity> = {
+          userCourse: currentUserCourse,
+        };
 
+        await ProfileService.update(userAfterlanguageUpdate, profilePartial);
+        return response
+          .response({
+            message: Messages.MESSAGE_SUCCESS,
+            updatedLanguageName: request.payload.languageName,
+            userCoursesInThisLanguage: userCourses.length,
+          })
+          .code(200);
+      }
 
+      return response
+        .response({
+          message: Messages.MESSAGE_SUCCESS,
+          updatedLanguageName: request.payload.languageName,
+          userCoursesInThisLanguage: userCourses.length,
+        })
+        .code(200);
+    } catch (error) {
+      console.log(error);
+      return Boom.badImplementation();
     }
-
+  }
 }

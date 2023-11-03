@@ -15,7 +15,6 @@ import { CourseService } from "../services/course_service";
 import { UserCourseService } from "../services/user_course_service";
 import { UserSettingsService } from "../services/user_settings_service";
 import { UserService } from "../services/user_service";
-import { getProgressForVocabulary } from "../const/common";
 import { ProfileEntity } from "../entities/profile_entity";
 
 import { IRequest } from "../interfaces/request";
@@ -32,6 +31,7 @@ import { ModeEntity } from "../entities/mode_entity";
 import { VocabularyService } from "../services/vocabulary_service";
 import { ModeService } from "../services/mode_service";
 import { VocabularyWordService } from "../services/vocabulary_word_service";
+import { UserUtils } from "../logic/user";
 
 export class ProfileController {
   public static async getUserProfileData(
@@ -51,7 +51,7 @@ export class ProfileController {
       }
       const userCourses: UserCourseEntity[] =
         await UserCourseService.getActiveUserCourses(user);
-      const vocabularyProgress = await getProgressForVocabulary(
+      const vocabularyProgress = await UserUtils.getProgressForVocabulary(
         userCourses,
         user
       );
