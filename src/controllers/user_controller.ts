@@ -74,7 +74,7 @@ export class UserController {
             }
 
             if (!(UserUtils.validateEmail(payload.email))) {
-                return Boom.badRequest(ErrorCodes.ERROR_INVALID_EMAIL_OR_PASSWORD)
+                return Boom.badRequest(ErrorCodes.ERROR_INVALID_PASSWORD)
             }
             const existingUser = await UserService.getUserByEmail(payload.email)
             if (existingUser) {
@@ -167,7 +167,7 @@ export class UserController {
             }
             const isPasswordCorrect = await bcrypt.compare(payload.password, user.password);
             if (!isPasswordCorrect) {
-                return Boom.badRequest(ErrorCodes.ERROR_INVALID_EMAIL_OR_PASSWORD)
+                return Boom.badRequest(ErrorCodes.ERROR_INVALID_PASSWORD)
             }
             const accToken = generateToken({ userId: user.id });
             const refToken = user.refreshToken;

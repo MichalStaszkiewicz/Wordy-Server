@@ -24,7 +24,6 @@ import { validateToken } from "../const/validation/validate_auth";
 import { IValidateToken } from "../interfaces/validate_token";
 import { JwtPayload } from "../interfaces/jwt_payload";
 import { UserCourseController } from "./user_course_controller";
-import { getProgressForVocabulary } from "../const/common";
 import { VocabularyEntity } from "../entities/vocabulary_entity";
 import { VocabularyService } from "../services/vocabulary_service";
 import { VocabularyWordEntity } from "../entities/vocabulary_word_entity";
