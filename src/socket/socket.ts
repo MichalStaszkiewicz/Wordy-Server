@@ -1,4 +1,3 @@
-
 import { server } from "../server";
 
 import { Server, Socket } from "socket.io";
@@ -36,6 +35,10 @@ export function initSocket() {
     });
 
     socket.on(SocketEvents.joinRoom, (token) => {
+      connectedClients.forEach((k, v) => {
+        console.log("Client " + k);
+      });
+      console.log("join room with token " + token);
       joinRoom(connectedClients, token, socket);
     });
 
@@ -56,9 +59,15 @@ export function initSocket() {
     socket.on(SocketEvents.tokenRefresh, (data) => {
       tokenRefresh(socket, data);
     });
-    socket.on(SocketEvents.logout, (token) => {
-      logOut(socket, token, io);
+    socket.on(SocketEvents.logout, async (token) => {
+      console.log("left room with token " + token);
+      await logOut(socket, token, io).then(() => {
+        connectedClients.forEach((k, v) => {
+          console.log("Client " + k);
+        });
+      });
     });
+
     socket.on(SocketEvents.disconnect, disconnect);
   });
 }

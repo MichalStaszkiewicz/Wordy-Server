@@ -49,7 +49,7 @@ export async function socketMiddleware(
           oldToken: token!,
         };
         socket.leave(token!);
-        connectedClients.delete(token);
+        connectedClients.delete(userId);
         socket.join(newToken);
         connectedClients.set(newToken, user.id);
 

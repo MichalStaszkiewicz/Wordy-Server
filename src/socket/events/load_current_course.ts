@@ -34,13 +34,16 @@ export async function loadCurrentCourse(
 
   if (activeCoursesData.length == 0) {
   }
-  var activeCourses = await UserUtils.getProgressForVocabulary(activeCoursesData, user);
+  var activeCourses = await UserUtils.getProgressForVocabulary(
+    activeCoursesData,
+    user
+  );
   var activeCourse;
   activeCourses!.forEach((e) => {
     if (e.activeCourse.userCourse.id == user.profile.userCourse.id) {
       activeCourse = e;
     }
   });
-
+  
   io.to(headers.authorization!).emit("current_course", { activeCourse });
 }
