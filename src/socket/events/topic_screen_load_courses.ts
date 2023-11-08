@@ -30,6 +30,7 @@ export async function topicScreenLoadCourses(
   const user: UserEntity = await UserService.getUserById(verifiedToken.userId);
   var activeCoursesData: UserCourseEntity[] =
     await UserCourseService.getActiveUserCourses(user);
+    
 
   var activeCourses = await UserUtils.getProgressForVocabulary(activeCoursesData, user);
 

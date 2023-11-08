@@ -82,7 +82,7 @@ export class UserCourseRepository {
     return dataSource.getRepository(UserCourseEntity).find({
       where: {
         user: user,
-        interfaceLanguage: user.profile.settings.interfaceLanguage,
+       
       },
       relations: {
         course: true,

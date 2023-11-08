@@ -147,6 +147,7 @@ export class UserUtils {
           if (topicWordCountMap.get(topic.name) == knownWordsInGivenTopic) {
             finishedTopics++;
           }
+
           topicProgress.push({
             name: topic.name,
             knownWords: topicWordKnownCountMap.get(topic.name)!,
@@ -163,16 +164,18 @@ export class UserUtils {
             topicWordKnownCountMap.set(word.word.topic.name, 1);
           }
         }
-
+ 
+        
+        
         const newCourseProgress: ActiveCourseProgress = {
           activeCourse: {
             topicProgress: topicProgress,
             userCourse: activeCourse,
             finishedTopics: finishedTopics,
             knownWords: knownWords.length,
-            totalProgress: Number(
+            totalProgress: totalWordsCount>0?Number(
               ((knownWords.length / totalWordsCount) * 100).toPrecision(2)
-            ),
+            ):0,
             topicsCount: topics.length,
             totalWordsCount: totalWordsCount,
           },

@@ -32,6 +32,7 @@ export class WordController {
     }
 
   }
+  
   public static async getWordsByTopic(request: Request, response: ResponseToolkit) {
     const { topicName } = request.params as { topicName: string }
     if (!topicName) {
