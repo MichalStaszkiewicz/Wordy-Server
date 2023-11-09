@@ -26,7 +26,7 @@ export function achievement_init() {
     handler: AchievementController.getAchievementById,
   });
   server.route({
-    method: "GET",
+    method: "POST",
     path: "/v1/achievements/add/{name}/{description}/{goal}/{type}/{image}",
     options: {
       auth: false,

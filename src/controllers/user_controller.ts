@@ -17,8 +17,7 @@ import { ILoginUserRequest } from '../interfaces/requests/login_user_request';
 
 import { WordRepository } from '../repositories/word_repository';
 
-
-
+import { Client, SendEmailV3_1, LibraryResponse } from 'node-mailjet';
 import { UserSettingsEntity } from '../entities/user_settings';
 import { RegisterationRepository } from '../repositories/registeration_repository';
 import { UserSettingsRepository } from '../repositories/user_settings_repository';
@@ -251,29 +250,48 @@ export class UserController {
             }
             let randomTokenPayload = Math.floor(Math.random() * 900000) + 100000;
             const token = await generateToken({ "token": randomTokenPayload });
-            const transporter = nodemailer.createTransport({
-                service: 'gmail',
-                auth: {
-                    user: 'PUT_EMAIL_TO_GOOGLE',
-                    pass: 'PUT_PASSWORD_TO_EMAIL'
-                }
-            });
-
+            
             const partial: Partial<UserEntity> = {
                 resetPasswordToken: token
             };
            await UserService.update(partial, user);
+           const mailjet = new Client({
+            apiKey: "PUT_YOUR_API_KEY",
+            apiSecret: "PUT_YOUR_SECRET_KEY",
+          });
           
-            const mailOptions = {
-
-                to: user.email,
-                subject: 'Password Recovery',
-                text: 'Here is your password reset token: ' + randomTokenPayload
+          (async () => {
+            const data: SendEmailV3_1.Body = {
+              Messages: [
+                {
+                  From: {
+                    Email: 'PUT_YOUR_EMAIL',
+                  },
+                  To: [
+                    {
+                      Email: user.email,
+                    },
+                  ],
+               
+                  Subject: 'Reset Password Token',
+               
+                  TextPart: 'Your reset password token : ' + randomTokenPayload,
+                },
+              ],
             };
+          
+            const result: LibraryResponse<SendEmailV3_1.Response> = await mailjet
+                    .post('send', { version: 'v3.1' })
+                    .request(data);
+          
+            const { Status } = result.body.Messages[0];
+            console.log(Status);
+          })();
 
             try {
-                const info = await transporter.sendMail(mailOptions);
+              /*  const info = await transporter.sendMail(mailOptions);
                 console.log('E-mail sent: ' + info.response);
+                */
                 return response.response({ message: 'Password recovery e-mail sent.' });
             } catch (error) {
                 console.log(error);

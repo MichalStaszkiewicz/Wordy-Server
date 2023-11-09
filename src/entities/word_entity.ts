@@ -49,57 +49,14 @@ export class WordEntity {
   @Column({ nullable: false, name: "turkish", unique: true })
   turkish!: string;
 
-  @Column({ nullable: false, name: "portuguese", unique: true })
-  portuguese!: string;
-
-  @Column({ nullable: false, name: "bengali", unique: true })
-  bengali!: string;
-
+ 
   @Column({ nullable: false, name: "hindi", unique: true })
   hindi!: string;
 
   @Column({ nullable: false, name: "korean", unique: true })
   korean!: string;
 
-  @Column({ nullable: false, name: "vietnamese", unique: true })
-  vietnamese!: string;
-
-  @Column({ nullable: false, name: "dutch", unique: true })
-  dutch!: string;
-
-  @Column({ nullable: false, name: "danish", unique: true })
-  danish!: string;
-
-  @Column({ nullable: false, name: "norwegian", unique: true })
-  norwegian!: string;
-
-  @Column({ nullable: false, name: "finnish", unique: true })
-  finnish!: string;
-
-  @Column({ nullable: false, name: "hungarian", unique: true })
-  hungarian!: string;
-
-  @Column({ nullable: false, name: "greek", unique: true })
-  greek!: string;
-
-  @Column({ nullable: false, name: "ukrainian", unique: true })
-  ukrainian!: string;
-
-  @Column({ nullable: false, name: "czech", unique: true })
-  czech!: string;
-
-  @Column({ nullable: false, name: "romanian", unique: true })
-  romanian!: string;
-
-  @Column({ nullable: false, name: "bulgarian", unique: true })
-  bulgarian!: string;
-
-
-  @Column({ nullable: false, name: "malaysian", unique: true })
-  malaysian!: string;
-
-  @Column({ nullable: false, name: "thai", unique: true })
-  thai!: string;
+ 
 
   @ManyToOne(() => TopicEntity)
   @JoinColumn({})
