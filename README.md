@@ -11,6 +11,19 @@ Before diving into the installation and running of the Wordy Server, ensure that
 - **Node.js and npm:** Your system must have Node.js and npm installed. If you haven't already, download and install them.
 - **PostgreSQL Database:** Set up a PostgreSQL database (e.g., pgAdmin) named 'wordydb'. Create a Postgres user with the username 'postgres' and password '1337'. Ensure the database is running on the default PostgreSQL port, 5432.
 
+## Configuration ⚙️
+
+1. **Create .env file:** In the project directory, create a file named `.env`. This file will hold the sensitive environment variables required for running the server.
+
+```env
+NODE_ENV=development
+DB_LOGIN  = "TYPE_LOGIN_TO_WORDY_DB"
+DB_PASSWORD = "TYPE_PASSWORD_TO_WORDY_DB"
+DB_HOST  = "127.0.0.1"
+DB_PORT = "TYPE_YOUR_DB_PORT"
+SECRET = "TYPE_YOUR_SECRET_KEY"
+```
+
 ## Installation and Running 🧰
 
 1. **Repository Cloning:** Clone the Wordy Server repository from GitHub using the command git clone
