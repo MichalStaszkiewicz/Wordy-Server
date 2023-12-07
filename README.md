@@ -1,6 +1,8 @@
 # 🚀 Wordy Server 🚀
 
-The Wordy Server is the backbone of the Wordy application, providing the API endpoints that the Wordy frontend interacts with. Developed using TypeScript and Hapi, the server seamlessly facilitates data exchange and communication between the client and the backend.
+The Wordy Server is the backbone of the <a href="https://github.com/MichalStaszkiewicz/Wordy">
+Wordy
+</a> application, providing the API endpoints that the Wordy frontend interacts with. Developed using TypeScript and Hapi, the server seamlessly facilitates data exchange and communication between the client and the backend.
 
 ## Prerequisites ⚙️
 
