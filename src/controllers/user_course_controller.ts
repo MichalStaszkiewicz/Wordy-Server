@@ -35,7 +35,7 @@ import { UserController } from "./user_controller";
 import { IRequest } from "../interfaces/request";
 import { ICourseProgressResponse } from "../interfaces/responses/course_progress_response";
 import { VocabularyEntity } from "../entities/vocabulary_entity";
-import { ModeEntity } from "../entities/mode_entity";
+
 import { VocabularyService } from "../services/vocabulary_service";
 import { ModeService } from "../services/mode_service";
 import { UserUtils } from "../logic/user";
@@ -79,10 +79,8 @@ export class UserCourseController {
             userCourse.user = user;
 
             let vocabulary: VocabularyEntity = new VocabularyEntity();
-            let mode: ModeEntity = new ModeEntity();
-            mode.vocabulary = await VocabularyService.save(vocabulary);
-
-            userCourse.mode = await ModeService.save(mode);
+         
+         
 
             const userCourseExists = await UserCourseService.checkUserCourseExistence(userCourse.course, user);
             if (userCourseExists) {

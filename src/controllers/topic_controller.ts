@@ -1,7 +1,7 @@
 import Boom from "boom";
 import { ResponseToolkit } from "hapi";
 import { JwtPayload } from "jsonwebtoken";
-import { secretToken } from "../const/config";
+
 import { ErrorCodes } from "../const/error_codes";
 import { generateToken } from "../const/validation/validate_auth";
 import { TopicService } from "../services/topic_service";

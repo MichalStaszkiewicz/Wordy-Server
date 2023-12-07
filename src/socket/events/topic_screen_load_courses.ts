@@ -1,5 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { secretToken } from "../../const/config";
+
 import Boom from "boom";
 import { io } from "socket.io-client";
 
@@ -25,7 +25,7 @@ export async function topicScreenLoadCourses(
 
   let token = headers.authorization;
 
-  const verifiedToken = jwt.verify(token!, secretToken) as JwtPayload;
+  const verifiedToken = jwt.verify(token!,     process.env.SECRET) as JwtPayload;
 
   const user: UserEntity = await UserService.getUserById(verifiedToken.userId);
   var activeCoursesData: UserCourseEntity[] =

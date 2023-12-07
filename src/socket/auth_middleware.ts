@@ -1,6 +1,6 @@
 import { IRequest } from "../interfaces/request";
 import * as hapi from "@hapi/hapi";
-import { secretToken } from "../const/config";
+
 import { JwtPayload } from "../interfaces/jwt_payload";
 import { io } from "socket.io-client";
 import { generateToken } from "../const/validation/validate_auth";
@@ -28,7 +28,7 @@ export async function socketMiddleware(
 
   if (token != undefined) {
     try {
-      let verifiedToken = (await jwt.verify(token, secretToken)) as JwtPayload;
+      let verifiedToken = (await jwt.verify(token,  process.env.SECRET)) as JwtPayload;
 
       next();
     } catch (error) {
@@ -38,7 +38,7 @@ export async function socketMiddleware(
         let user: UserEntity = await UserService.getUserById(userId);
         let verifiedToken = jwt.verify(
           user.refreshToken,
-          secretToken
+          process.env.SECRET
         ) as JwtPayload;
         const newToken = generateToken({ userId: verifiedToken.userId });
 

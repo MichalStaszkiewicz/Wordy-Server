@@ -2,3 +2,4 @@
 /dist
 /.vscode
 debug.log
+.env

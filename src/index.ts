@@ -7,7 +7,7 @@ import HapiSwagger from 'hapi-swagger';
 import { Server, Socket } from 'socket.io';
 import { UserCourseService } from "./services/user_course_service";
 import { initSocket } from "./socket/socket";
-import { secretToken } from "./const/config";
+
 import { validateToken } from "./const/validation/validate_auth";
 
 import { user_init } from "./routes/user_routes";
@@ -53,7 +53,7 @@ const init = async () => {
 
 
   server.auth.strategy('jwt', 'jwt', {
-    key: secretToken,
+    key: process.env.SECRET,
     validate: validateToken,
     verifyOptions: { algorithms: ['HS256'] },
   });

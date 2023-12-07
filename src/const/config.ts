@@ -1,3 +1,4 @@
-export const APP_PORT = 1344
-export const APP_HOST = 'localhost'
-export const secretToken = 'secret'
+export const APP_PORT = 1344;
+export const APP_HOST = "localhost";
+
+

@@ -1,5 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { secretToken } from "../../const/config";
+
 import Boom from "boom";
 import { io } from "socket.io-client";
 
@@ -15,18 +15,18 @@ import { UserStatisticsService } from "../../services/user_statistics_service";
 import { TQuizSummary } from "../../const/types/quiz_summary";
 import { UserUtils } from "../../logic/user";
 
-
 const jwt = require("jsonwebtoken");
 export async function quizSummary(
   connectedClients: Map<string, string>,
   data: any,
-  socket: any,io:any
+  socket: any,
+  io: any
 ) {
   const headers = socket.handshake.headers;
   const requestData = data as TQuizSummary;
   const verifiedToken = jwt.verify(
     headers.authorization!,
-    secretToken
+    process.env.SECRET
   ) as JwtPayload;
   const user: UserEntity = await UserService.getUserById(verifiedToken.userId);
   if (!user) {

@@ -44,7 +44,7 @@ import { AchievementService } from '../services/achievement_service';
 import { UserAchievementsEntity } from '../entities/user_achievements_entity';
 import { UserStatisticsEntity } from '../entities/user_statistics_entity';
 import { UserStatisticsService } from '../services/user_statistics_service';
-import { secretToken } from '../const/config';
+
 const jwt = require('jsonwebtoken');
 
 import nodemailer from 'nodemailer';
@@ -88,7 +88,7 @@ export class UserController {
                 const hashedPassword = await bcrypt.hash(payload.password, 10);
                 newUser.email = payload.email;
                 newUser.password = hashedPassword;
-                const refreshToken = jwt.sign({ userId: newUser.id }, secretToken, { expiresIn: '7d' });
+                const refreshToken = jwt.sign({ userId: newUser.id }, process.env.SECRET, { expiresIn: '7d' });
                 newUser.refreshToken = refreshToken;
                 const profile = new ProfileEntity();
                 profile.fullName = payload.fullName;
@@ -217,7 +217,7 @@ export class UserController {
             if (!user.resetPasswordToken) {
                 return Boom.badRequest(ErrorCodes.ERROR_SKIPPED_RECOVER_STEPTS);
             }
-            const verifiedToken = await jwt.verify(user.resetPasswordToken, secretToken);
+            const verifiedToken = await jwt.verify(user.resetPasswordToken,  process.env.SECRET);
             if (!verifiedToken) {
 
 

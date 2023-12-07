@@ -1,7 +1,5 @@
 import { JwtPayload } from "jsonwebtoken";
-import { secretToken } from "../../const/config";
-import Boom from "boom";
-import { io } from "socket.io-client";
+
 
 import { ErrorCodes } from "../../const/error_codes";
 import { UserCourseEntity } from "../../entities/user_course_entity";
@@ -24,7 +22,7 @@ export async function loadCurrentCourse(
   const headers = socket.handshake.headers;
   const verifiedToken = jwt.verify(
     headers.authorization!,
-    secretToken
+    process.env.SECRET!
   ) as JwtPayload;
 
   const user: UserEntity = await UserService.getUserById(verifiedToken.userId);

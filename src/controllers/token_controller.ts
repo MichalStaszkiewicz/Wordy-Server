@@ -3,17 +3,19 @@ import { IRequest } from "../interfaces/request";
 
 import Boom from "boom";
 import * as JWT from "jsonwebtoken";
-import { secretToken } from "../const/config";
+
 import { generateToken } from "../const/validation/validate_auth";
 import { ErrorCodes } from "../const/error_codes";
 import { JwtPayload } from "jsonwebtoken";
+
 export class TokenController {
   public static async refreshToken(request: any, response: ResponseToolkit) {
     try {
-      const verifiedToken = (await JWT.verify(
+      
+      const verifiedToken = JWT.verify(
         request.payload.token,
-        secretToken
-      )) as JwtPayload;
+        process.env.SECRET!
+      ) as JwtPayload;
 
       if (verifiedToken) {
         const newToken = await generateToken({ userId: verifiedToken.userId });

@@ -1,7 +1,7 @@
 import Joi = require("joi");
 import * as Hapi from "@hapi/hapi";
 import * as JWT from "jsonwebtoken";
-import { secretToken } from "../config";
+
 import Boom = require("boom");
 import { IValidateToken } from "../../interfaces/validate_token";
 
@@ -14,7 +14,7 @@ import { UserEntity } from "../../entities/user_entity";
 import { UserAchievementService } from "../../services/user_achievements_service";
 export function generateToken(payload: any): string {
   //TODO change expiredsIn to 3h
-  return JWT.sign(payload, secretToken, { expiresIn: "3h" });
+  return JWT.sign(payload,  process.env.SECRET!, { expiresIn: "3h" });
 }
 
 export async function checkAndSaveAchievement(
@@ -46,8 +46,8 @@ export async function validateToken(
   const expirationTime = decoded.exp;
   const currentTime = Math.floor(Date.now() / 1000);
   const timeRemaining = expirationTime - currentTime;
-  const encodedToken = JWT.sign(decoded, secretToken);
-  const verifiedToken = await JWT.verify(encodedToken, secretToken);
+  const encodedToken = JWT.sign(decoded,  process.env.SECRET!);
+  const verifiedToken = await JWT.verify(encodedToken,  process.env.SECRET!);
   if (verifiedToken) {
     console.log("Token valid");
     console.log("Remaining time: " + timeRemaining);
